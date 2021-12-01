@@ -2,7 +2,7 @@
 
 <?php
 
-$pdo = new PDO('mysql:host=topadevcfftest.mysql.db;dbname=topadevcfftest', 'topadevcfftest', 'HETICprojet11', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+$pdo = new PDO('mysql:host=localhost;dbname=cms_php', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
 $mail = $_GET['mail'];
 $recup_donnee_mail = $pdo->query('SELECT * FROM hetic_inscription WHERE mail="'.$mail.'"');
