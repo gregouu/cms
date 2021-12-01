@@ -56,6 +56,43 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
 		}?>
 
         <h3>COMMENTAIRES</h3>
+
+
+
+
+
+
+        <?php
+            $resulteuh2 = $pdo->query('SELECT * FROM hetic_publication WHERE id="'.$id.'"');
+            $titre_com = $resulteuh2->fetch(PDO::FETCH_ASSOC);
+            echo $titre_com['titre'];
+        ?>
+        <form action="" method="POST">
+            <input type="text" name="auteur_com" placeholder="Votre pseudo">
+            <input type="text" name="titre_com" placeholder="Titre du commentaire">
+            <textarea name="contenu_com" cols="30" rows="10" placeholder="Contenu du commentaire"></textarea>
+            <input type="submit">
+        </form>
+
+        <?php
+            $date = date('jj-m-Y');
+            $requete_insert_com = $pdo->prepare("INSERT INTO commentaires (auteur_com, titre_com, contenu_com, date_com) VALUES (:auteur_com, :titre_com, :contenu_com, :date_com)");
+            
+            $requete_insert_com->execute(array(
+                'auteur_com'    => $_POST['auteur_com'],
+                'titre_com' => $_POST['titre_com'],
+                'contenu_com'    => $_POST['contenu_com'],
+                'date_com'  => $date
+            ));
+        ?>
+
+
+
+
+
+
+
+
 	     
 	   
 
