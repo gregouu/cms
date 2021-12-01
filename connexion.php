@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$pdo = new PDO('mysql:host=localhost;dbname=cms_php', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+$pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 if(isset($_POST['connexion'])){
     $mail = $_POST['mail'];
     $mdp = $_POST['mdp'];
@@ -11,7 +11,7 @@ if(isset($_POST['connexion'])){
         $liste = $result->fetch();
         $hash = password_verify($mdp, $liste['mdp']);
         if($mail == $liste['mail'] AND $mdp == $hash){
-            header("Location: http://cms-php.topadev.com/location.php?mail=".$_POST['mail']);
+            header("Location: http://127.0.0.1/cms-php/location.php?mail=".$_POST['mail']);
         }
         else{
             echo "Une erreur soit dans l'email soit dans le mot de passe";

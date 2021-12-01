@@ -1,5 +1,5 @@
 <?php
-$pdo = new PDO('mysql:host=localhost;dbname=cms_php', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+$pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
     $token = rand(100000,999999);
     $pass = !empty($_POST['mdp']) ? trim($_POST['mdp']) : null;
@@ -19,7 +19,7 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms_php', 'root', '', array(PDO::ATT
             'etat'   => $_POST['etat'],
             'token'  => $token
         ));
-		header('Location: http://cms-php.topadev.com/location.php');
+		header('Location: http://127.0.0.1/cms-php/location.php');
     }
 
 
@@ -33,6 +33,6 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms_php', 'root', '', array(PDO::ATT
 
 
     mail($to, $subject, $message);
-    header('Location: http://cms-php.topadev.com/connexion.php');**/
+    header('Location: http://cms-php.topadev.com/connexion.php'); **/
 
     ?>

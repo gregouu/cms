@@ -2,7 +2,7 @@
 
 <?php
 
-$pdo = new PDO('mysql:host=localhost;dbname=cms_php', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+$pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
 $mail = $_GET['mail'];
 $recup_donnee_mail = $pdo->query('SELECT * FROM hetic_inscription WHERE mail="'.$mail.'"');
@@ -92,6 +92,6 @@ $affichage = $pdo->query("SELECT * FROM hetic_inscription"); ?>
 
 
 
-<a href="http://cms-php.topadev.com/index.php?deconnexion=true"><button>Deconnexion</button></a>
+<a href="http://127.0.0.1/cms-php/index.php?deconnexion=true"><button>Deconnexion</button></a>
 
 
