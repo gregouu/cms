@@ -65,25 +65,38 @@ $affichage = $pdo->query("SELECT * FROM hetic_inscription"); ?>
 <br>
 
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
 	<input type="text" placeholder="Titre" name="titre">
 	<textarea name="contenu" cols="30" rows="10" placeholder="Contenu"></textarea>
-	<input type="text" placeholder="IMAGE POUR UPLOAD">
-	<input type="submit">
+	<input type="file" name="uploadfile" value=""/>
+	<input type="submit" name="upload">
 </form>
 
 <?php 
 	$date = date('jj-m-Y');
 	$auteur = $prenom;
+	$msg = "";
     if ($_POST) {
-        $new_publi = $pdo->prepare("INSERT INTO hetic_publication (titre, contenu, auteur, date) VALUES (:titre, :contenu, :auteur, :date)");
+		$filename = $_FILES["uploadfile"]["name"];
+		$tempname = $_FILES["uploadfile"]["tmp_name"];
+			
+		$folder = "images/".$filename;
+        $new_publi = $pdo->prepare("INSERT INTO hetic_publication (titre, contenu, auteur, date, nom) VALUES (:titre, :contenu, :auteur, :date, :nom)");
 
         $new_publi->execute(array(
             'titre'    => $_POST['titre'],
             'contenu' => $_POST['contenu'],
             'auteur'    => $auteur,
-            'date'  => $date
+            'date'  => $date,
+			'nom'  => $filename
         ));
+
+		// Now let's move the uploaded image into the folder: image
+		if (move_uploaded_file($tempname, $folder)) {
+			$msg = "Image uploaded successfully";
+		}else{
+			$msg = "Failed to upload image";
+		}
     }
 ?>
 

@@ -41,8 +41,10 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
 	 
 	  	$resulteuh = $pdo->query("SELECT * FROM hetic_publication");
 	  	while($result_greg = $resulteuh->fetch(PDO::FETCH_ASSOC)){ ?>
-      <?php echo "<a href='publi.php?".$result_greg['id'].">";?>
+      <?php echo "<a href='publi.php?id=".$result_greg["id"]."'>";?>
       <div>
+      <img src="images/<?php echo $result_greg['nom']; ?>" alt="<?php echo $result_greg['nom']; ?>">
+      <br>
 			<?php echo $result_greg['titre']; ?>
 			<br>
 			<?php echo $result_greg['contenu'];?>

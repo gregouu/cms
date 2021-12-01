@@ -36,12 +36,15 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
 </nav>
 	  
 	  
-	  <img src="" alt="">
 	  <br>
 	  <?php 
+
+      $id = $_GET['id'];
 	 
-	  	$resulteuh = $pdo->query("SELECT * FROM hetic_publication");
+	  	$resulteuh = $pdo->query('SELECT * FROM hetic_publication WHERE id="'.$id.'"');
 	  	while($result_greg = $resulteuh->fetch(PDO::FETCH_ASSOC)){ ?>
+      <img src="images/<?php echo $result_greg['nom']; ?>" alt="<?php echo $result_greg['nom']; ?>">
+      <br>
 			<?php echo $result_greg['titre']; ?>
 			<br>
 			<?php echo $result_greg['contenu'];?>
@@ -51,6 +54,8 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
 			<?php echo $result_greg['date'];
 	  
 		}?>
+
+        <h3>COMMENTAIRES</h3>
 	     
 	   
 
