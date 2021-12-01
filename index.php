@@ -9,7 +9,7 @@ $pdo = new PDO('mysql:host=topadevcfftest.mysql.db;dbname=topadevcfftest', 'topa
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 
-    <title>The best CMS 4 ever</title>
+    <title>The best CMS 4 eveeer</title>
   </head>
   <body>
 
