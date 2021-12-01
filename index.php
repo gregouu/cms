@@ -41,16 +41,18 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
 	 
 	  	$resulteuh = $pdo->query("SELECT * FROM hetic_publication");
 	  	while($result_greg = $resulteuh->fetch(PDO::FETCH_ASSOC)){ ?>
-      <a href="">
+      <?php echo "<a href='publi.php?".$result_greg['id'].">";?>
+      <div>
 			<?php echo $result_greg['titre']; ?>
 			<br>
 			<?php echo $result_greg['contenu'];?>
 			<br>
 			<?php echo 'Auteur: '.$result_greg['auteur'];?>
 			<br>
-			<?php echo $result_greg['date'];?>
-	    </a>
-		<?php}?>
+			<?php echo $result_greg['date'];
+      echo '</div>';
+	    echo '</a>';
+    }?>
 	     
 	   
 

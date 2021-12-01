@@ -23,16 +23,4 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
     }
 
 
-   /** $result = $pdo->query("SELECT * FROM hetic_inscription");
-    $liste = $result->fetch();
-    $id = $liste['id'];
-
-    $to      = $_POST['mail'];
-    $subject = 'Vérification compte';
-    $message = 'http://cms-php.topadev.com/update.php?token='.$token.'&id='.$id;
-
-
-    mail($to, $subject, $message);
-    header('Location: http://cms-php.topadev.com/connexion.php'); **/
-
     ?>
