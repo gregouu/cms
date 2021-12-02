@@ -1,14 +1,14 @@
 <?php
 $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
-    $token = rand(100000,999999);
+    $token = rand(1,999999);
     $pass = !empty($_POST['mdp']) ? trim($_POST['mdp']) : null;
     $passwordHash = password_hash($pass, PASSWORD_DEFAULT);
    
 
 
     if ($_POST) {
-        $result = $pdo->prepare("INSERT INTO hetic_inscription (nom, prenom, mail, mdp, statut, etat, token) VALUES (:nom, :prenom, :mail, :mdp, :statut, :etat, :token)");
+        $result = $pdo->prepare("INSERT INTO hetic_inscription (nom, prenom, mail, mdp, statut, token) VALUES (:nom, :prenom, :mail, :mdp, :statut, :token)");
 
         $result->execute(array(
             'nom'    => $_POST['nom'],
@@ -16,10 +16,9 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
             'mail'   => $_POST['mail'],
             'mdp'    => $passwordHash,
             'statut' => $_POST['statut'],
-            'etat'   => $_POST['etat'],
             'token'  => $token
         ));
-		header('Location: http://127.0.0.1/cms-php/location.php');
+		header('Location: http://127.0.0.1/cms-php/connexion.php');
     }
 
 

@@ -34,14 +34,13 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
     </form>
   </div>
 </nav>
-	  
-	  <img src="" alt="">
-	  <br>
-	  <?php 
+	  	  <?php 
+
+      $token_recup = $_GET['token'];
 	 
 	  	$resulteuh = $pdo->query("SELECT * FROM hetic_publication");
 	  	while($result_greg = $resulteuh->fetch(PDO::FETCH_ASSOC)){ ?>
-      <?php echo "<a href='publi.php?id=".$result_greg["id"]."'>";?>
+      <?php echo "<a href='publi.php?id=".$result_greg["id"]."&token=".$token_recup."'>";?>
       <div>
       <img src="images/<?php echo $result_greg['nom']; ?>" alt="<?php echo $result_greg['nom']; ?>">
       <br>

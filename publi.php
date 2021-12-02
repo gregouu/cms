@@ -1,5 +1,6 @@
 <?php
 $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+$token_recup = $_GET['token'];
 ?>
 <!doctype html>
 <html lang="fr">
@@ -43,9 +44,9 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
 	 
 	  	$resulteuh = $pdo->query('SELECT * FROM hetic_publication WHERE id="'.$id.'"');
 	  	while($result_greg = $resulteuh->fetch(PDO::FETCH_ASSOC)){ ?>
-      <img src="images/<?php echo $result_greg['nom']; ?>" alt="<?php echo $result_greg['nom']; ?>">
+      <img src="images/<?php echo $result_greg['nom'];?>" alt="<?php echo $result_greg['nom'];?>">
       <br>
-			<?php echo $result_greg['titre']; ?>
+			<?php echo $result_greg['titre'];?>
 			<br>
 			<?php echo $result_greg['contenu'];?>
 			<br>
@@ -59,42 +60,53 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
 
         <?php 
 
-        $affichage_commentaires = $pdo->query("SELECT * FROM commentaires");
+        $affichage_commentaires = $pdo->query('SELECT * FROM commentaires WHERE id_com="'.$id.'"');
         while($result_commentaires = $affichage_commentaires->fetch(PDO::FETCH_ASSOC)){?>
-            <?php echo $result_commentaires['titre_com'];?>
-            <?php echo $result_commentaires['contenu_com'];?>
-            <?php echo $result_commentaires['auteur_com'];?>
-            <?php echo $result_commentaires['date_com'];
+            <?php echo $result_commentaires['titre_com'];?><br>
+            <?php echo $result_commentaires['contenu_com'];?><br>
+            <?php echo $result_commentaires['auteur_com'];?><br>
+            <?php echo $result_commentaires['date_com'].'<br><br><br>';
         
         }?>
 
 
-
+<br>
 
 
 
         <?php
+            $recup_nom_token = $pdo->query('SELECT * FROM hetic_inscription WHERE token="'.$token_recup.'"');
+            $essai_recup_token = $recup_nom_token->fetch(PDO::FETCH_ASSOC);
+            
+            $test = $essai_recup_token['nom'].' '.$essai_recup_token['prenom'];
+        
             $resulteuh2 = $pdo->query('SELECT * FROM hetic_publication WHERE id="'.$id.'"');
             $titre_com = $resulteuh2->fetch(PDO::FETCH_ASSOC);
             echo $titre_com['titre'];
         ?>
         <form action="" method="POST">
-            <input type="text" name="auteur_com" placeholder="Votre pseudo">
-            <input type="text" name="titre_com" placeholder="Titre du commentaire">
-            <textarea name="contenu_com" cols="30" rows="10" placeholder="Contenu du commentaire"></textarea>
+            <input type="text" placeholder="<?php echo $test;?>" disabled='disabled'><br>
+            <input type="text" name="titre_com" placeholder="Titre du commentaire"><br>
+            <textarea name="contenu_com" cols="30" rows="10" placeholder="Contenu du commentaire"></textarea><br>
             <input type="submit">
         </form>
 
         <?php
-            $date = date('d-m-Y');
-            $requete_insert_com = $pdo->prepare("INSERT INTO commentaires (auteur_com, titre_com, contenu_com, date_com) VALUES (:auteur_com, :titre_com, :contenu_com, :date_com)");
 
-            $requete_insert_com->execute(array(
-                'auteur_com'    => $_POST['auteur_com'],
-                'titre_com' => $_POST['titre_com'],
-                'contenu_com'    => $_POST['contenu_com'],
-                'date_com'  => $date
-            ));
+
+            $date = date('d-m-Y');
+            if($_POST){
+                $requete_insert_com = $pdo->prepare("INSERT INTO commentaires (auteur_com, titre_com, contenu_com, date_com, id_com) VALUES (:auteur_com, :titre_com, :contenu_com, :date_com, :id_com)");
+
+                $requete_insert_com->execute(array(
+                    'auteur_com'   => $test,
+                    'titre_com'    => $_POST['titre_com'],
+                    'contenu_com'  => $_POST['contenu_com'],
+                    'date_com'     => $date,
+                    'id_com'       => $id
+                ));
+            }
+
         ?>
 
 
