@@ -57,6 +57,17 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
 
         <h3>COMMENTAIRES</h3>
 
+        <?php 
+
+        $affichage_commentaires = $pdo->query("SELECT * FROM commentaires");
+        while($result_commentaires = $affichage_commentaires->fetch(PDO::FETCH_ASSOC)){?>
+            <?php echo $result_commentaires['titre_com'];?>
+            <?php echo $result_commentaires['contenu_com'];?>
+            <?php echo $result_commentaires['auteur_com'];?>
+            <?php echo $result_commentaires['date_com'];
+        
+        }?>
+
 
 
 
@@ -75,9 +86,9 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
         </form>
 
         <?php
-            $date = date('jj-m-Y');
+            $date = date('d-m-Y');
             $requete_insert_com = $pdo->prepare("INSERT INTO commentaires (auteur_com, titre_com, contenu_com, date_com) VALUES (:auteur_com, :titre_com, :contenu_com, :date_com)");
-            
+
             $requete_insert_com->execute(array(
                 'auteur_com'    => $_POST['auteur_com'],
                 'titre_com' => $_POST['titre_com'],

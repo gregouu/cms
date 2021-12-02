@@ -73,7 +73,7 @@ $affichage = $pdo->query("SELECT * FROM hetic_inscription"); ?>
 </form>
 
 <?php 
-	$date = date('jj-m-Y');
+	$date = date('d-m-Y');
 	$auteur = $prenom;
 	$msg = "";
     if ($_POST) {
