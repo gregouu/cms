@@ -27,6 +27,12 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
       <li class="nav-item">
         <a class="nav-link" href="connexion.php">Connexion</a>
       </li>
+      <?php
+        if(isset($_GET['token'])){
+          echo '<li class="nav-item"><a class="nav-link" href="location.php">Admin</a></li>';
+        }
+       
+      ?>
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

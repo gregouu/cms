@@ -1,6 +1,8 @@
 <?php
 $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-$token_recup = $_GET['token'];
+if(isset($_GET['token'])){
+    $token_recup = $_GET['token'];
+}
 ?>
 <!doctype html>
 <html lang="fr">
@@ -13,6 +15,9 @@ $token_recup = $_GET['token'];
     <style>
         .test{
             text-transform: uppercase;
+        }
+        .color-red{
+            color: red;
         }
     </style>
 
@@ -66,14 +71,20 @@ $token_recup = $_GET['token'];
 
         <?php 
 
-        $affichage_commentaires = $pdo->query('SELECT * FROM commentaires WHERE id_com="'.$id.'"');
-        while($result_commentaires = $affichage_commentaires->fetch(PDO::FETCH_ASSOC)){?>
-            <?php echo $result_commentaires['titre_com'];?><br>
-            <?php echo $result_commentaires['contenu_com'];?><br>
-            <?php echo $result_commentaires['auteur_com'];?><br>
-            <?php echo $result_commentaires['date_com'].'<br><br><br>';
+            $affichage_commentaires = $pdo->query('SELECT * FROM commentaires WHERE id_com="'.$id.'"');
+            while($result_commentaires = $affichage_commentaires->fetch(PDO::FETCH_ASSOC)){
+                $nom_com_token = $result_commentaires['auteur_com'];
+                $affichage_nom_com = $pdo->query('SELECT * FROM hetic_inscription WHERE token="'.$nom_com_token.'"');
+                $essain°1 = $affichage_nom_com->fetch(PDO::FETCH_ASSOC);
+                $essain°2 = $essain°1['prenom'];
+
+        ?>
+                <?php echo $result_commentaires['titre_com'];?><br>
+                <?php echo $result_commentaires['contenu_com'];?><br>
+                <?php echo $essain°2;?><br>
+                <?php echo $result_commentaires['date_com'].'<br><br><br>';
         
-        }?>
+            }?>
 
 
 <br>
@@ -81,20 +92,22 @@ $token_recup = $_GET['token'];
 
 
         <?php
+        if(isset($_GET['token'])){
             $recup_nom_token = $pdo->query('SELECT * FROM hetic_inscription WHERE token="'.$token_recup.'"');
             $essai_recup_token = $recup_nom_token->fetch(PDO::FETCH_ASSOC);
             
             $test = $essai_recup_token['nom'].' '.$essai_recup_token['prenom'];
+        }
         
             // $resulteuh2 = $pdo->query('SELECT * FROM hetic_publication WHERE id="'.$id.'"');
             // $titre_com = $resulteuh2->fetch(PDO::FETCH_ASSOC);
             // echo $titre_com['titre'];
         ?>
         <form action="" method="POST">
-            <input type="text" placeholder="<?php echo $test;?>" disabled='disabled'><br>
+            <input type="text" placeholder="<?php if(isset($_GET['token'])){echo $test;}else{echo'Jean Dupont';}?>" disabled='disabled'><br>
             <input type="text" name="titre_com" placeholder="Titre du commentaire"><br>
             <textarea name="contenu_com" cols="30" rows="10" placeholder="Contenu du commentaire"></textarea><br>
-            <input type="submit">
+            <?php if(isset($_GET['token'])){echo '<input type="submit">';}else{echo '<input type="submit" disabled="disabled">'; echo '<p class="color-red">Veuillez vous connecter</p>';} ?>
         </form>
 
         <?php
