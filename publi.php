@@ -10,6 +10,12 @@ $token_recup = $_GET['token'];
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 
+    <style>
+        .test{
+            text-transform: uppercase;
+        }
+    </style>
+
     <title>The best CMS 4 ever</title>
   </head>
   <body>
@@ -80,9 +86,9 @@ $token_recup = $_GET['token'];
             
             $test = $essai_recup_token['nom'].' '.$essai_recup_token['prenom'];
         
-            $resulteuh2 = $pdo->query('SELECT * FROM hetic_publication WHERE id="'.$id.'"');
-            $titre_com = $resulteuh2->fetch(PDO::FETCH_ASSOC);
-            echo $titre_com['titre'];
+            // $resulteuh2 = $pdo->query('SELECT * FROM hetic_publication WHERE id="'.$id.'"');
+            // $titre_com = $resulteuh2->fetch(PDO::FETCH_ASSOC);
+            // echo $titre_com['titre'];
         ?>
         <form action="" method="POST">
             <input type="text" placeholder="<?php echo $test;?>" disabled='disabled'><br>
@@ -99,7 +105,7 @@ $token_recup = $_GET['token'];
                 $requete_insert_com = $pdo->prepare("INSERT INTO commentaires (auteur_com, titre_com, contenu_com, date_com, id_com) VALUES (:auteur_com, :titre_com, :contenu_com, :date_com, :id_com)");
 
                 $requete_insert_com->execute(array(
-                    'auteur_com'   => $test,
+                    'auteur_com'   => $token_recup,
                     'titre_com'    => $_POST['titre_com'],
                     'contenu_com'  => $_POST['contenu_com'],
                     'date_com'     => $date,
