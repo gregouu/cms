@@ -8,14 +8,15 @@ if(isset($_POST['connexion'])){
 
     if(!empty($mail) AND !empty($mdp)){
         $result = $pdo->query("SELECT * FROM hetic_inscription");
-        $liste = $result->fetch();
-        $hash = password_verify($mdp, $liste['mdp']);
+        while($liste = $result->fetch(PDO::FETCH_ASSOC)){
+            $hash = password_verify($mdp, $liste['mdp']);
 
-        if($mail == $liste['mail'] AND $mdp == $hash){
-            header("Location: http://127.0.0.1/cms-php/location.php?mail=".$_POST['mail']);
-        }
-        else{
-            echo "Une erreur soit dans l'email soit dans le mot de passe";
+            if($mail == $liste['mail'] AND $mdp == $hash){
+                header("Location: http://127.0.0.1/cms-php/location.php?mail=".$_POST['mail']);
+            }
+            else{
+                echo "Une erreur soit dans l'email soit dans le mot de passe";
+            }
         }
     }
 }

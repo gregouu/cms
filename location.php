@@ -61,9 +61,13 @@ if(isset($_GET['mail'])){
 <?php
 
 
+if(isset($_GET['mail'])){
+	$affichage = $pdo->query('SELECT * FROM hetic_inscription WHERE mail="'.$mail.'"'); 
+}if(isset($_GET['token'])){
+	$affichage = $pdo->query('SELECT * FROM hetic_inscription WHERE token="'.$token_greg.'"'); 
+}
 
-$affichage = $pdo->query("SELECT * FROM hetic_inscription"); ?>
-
+?>
 <table class="table">
   <thead>
     <tr>
