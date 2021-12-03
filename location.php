@@ -1,13 +1,21 @@
 <?php session_start(); 
 $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
-$mail = $_GET['mail'];
-$recup_donnee_mail = $pdo->query('SELECT * FROM hetic_inscription WHERE mail="'.$mail.'"');
+if(isset($_GET['mail'])){
+	$mail = $_GET['mail'];
 
+	$recup_donnee_mail = $pdo->query('SELECT * FROM hetic_inscription WHERE mail="'.$mail.'"');
+	$donnee_mail = $recup_donnee_mail->fetch(PDO::FETCH_ASSOC);
+	$mail_greg = $donnee_mail["admin"];
+	$token_greg = $donnee_mail["token"];
+}else{
+	$token_greg = $_GET['token'];
 
-$donnee_mail = $recup_donnee_mail->fetch(PDO::FETCH_ASSOC);
-$mail_greg = $donnee_mail["admin"];
-$token_greg = $donnee_mail["token"];
+	$recup_donnee_token = $pdo->query('SELECT * FROM hetic_inscription WHERE token="'.$token_greg.'"');
+	$donnee_token = $recup_donnee_token->fetch(PDO::FETCH_ASSOC);
+	$mail_greg = $donnee_token['mail'];
+
+}
 ?>
 <!doctype html>
 <html lang="fr">
@@ -88,16 +96,15 @@ $affichage = $pdo->query("SELECT * FROM hetic_inscription"); ?>
     </tr>
   </tbody>
 
-
-
-
-
-
-
-
 <?php 
 	} 
-	$prenom = $donnee_mail['prenom'];
+
+	if(isset($_GET['mail'])){
+		$prenom = $donnee_mail['prenom'];
+	}else{
+		$prenom = $donnee_token['prenom'];
+	}
+	
 	
 ?>
 </table>
