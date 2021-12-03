@@ -33,7 +33,7 @@ $token_greg = $donnee_mail["token"];
         <a class="nav-link" href="index.php?token=<?php echo $token_greg;?>">Accueil <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="connexion.php">Connexion</a>
+        <a class="nav-link" href="#">Admin</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
@@ -89,12 +89,67 @@ $affichage = $pdo->query("SELECT * FROM hetic_inscription"); ?>
   </tbody>
 
 
+
+
+
+
+
+
 <?php 
 	} 
 	$prenom = $donnee_mail['prenom'];
 	
 ?>
 </table>
+<!-- PUBLICATION -->
+<?php
+
+	$recup_nom_via_token = $pdo->query('SELECT * FROM hetic_inscription WHERE token="'.$token_greg.'"');
+	$recup_nom_via_token2 = $recup_nom_via_token->fetch(PDO::FETCH_ASSOC);
+	$nom = $recup_nom_via_token2['prenom'];
+
+	$affi_card = $pdo->query('SELECT * FROM hetic_publication WHERE auteur="'.$nom.'"');
+	while($affi_card2 = $affi_card->fetch(PDO::FETCH_ASSOC)){?>
+
+		<div class="card" style="width: 18rem;">
+		<img src="images/<?php echo $affi_card2['nom']; ?>" class="card-img-top">
+		<div class="card-body">
+			<h5 class="card-title"><?php echo $affi_card2['titre']; ?></h5>
+			<p class="card-text"><?php echo $affi_card2['contenu']; ?></p>
+			<!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+		</div>
+		</div>
+
+<?php
+	}
+?>
+<br>
+<br>
+<!-- COMMENTAIRE -->
+
+<?php
+
+	$affi_com = $pdo->query('SELECT * FROM commentaires WHERE auteur_com="'.$token_greg.'"');
+	while($affi_com2 = $affi_com->fetch(PDO::FETCH_ASSOC)){?>
+
+	<div class="card" style="width: 18rem;">
+		<h4><?php echo $affi_com2['titre_com']; ?></h4>
+		<br>
+		<p><?php echo $affi_com2['contenu_com']; ?></p>
+		<br>
+		<p><?php echo $affi_com2['date_com']; ?></p>
+	</div>
+
+<?php
+	}
+?>
+
+
+<br><br>
+<!-- NEW PUBLICATION -->
+
+
+
 
 <p>Bonjour <strong><?php echo $prenom;?></strong>, voulez vous écrire une nouvelle publication ?</p>
 <br>
