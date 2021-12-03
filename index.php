@@ -28,9 +28,11 @@ $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ER
         <a class="nav-link" href="connexion.php">Connexion</a>
       </li>
       <?php
-        if(isset($_GET['token'])){
+        if(isset($_GET['token']) > 0){
           $tk = $_GET['token'];
           echo '<li class="nav-item"><a class="nav-link" href="location.php?token='.$tk.'">Admin</a></li>';
+        }if(isset($_GET['token']) == ''){
+          echo '<li>  </li>';
         }
        
       ?>

@@ -10,6 +10,7 @@ if(isset($_POST['connexion'])){
         $result = $pdo->query("SELECT * FROM hetic_inscription");
         $liste = $result->fetch();
         $hash = password_verify($mdp, $liste['mdp']);
+
         if($mail == $liste['mail'] AND $mdp == $hash){
             header("Location: http://127.0.0.1/cms-php/location.php?mail=".$_POST['mail']);
         }
@@ -21,7 +22,7 @@ if(isset($_POST['connexion'])){
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <!-- Required meta tags -->
@@ -46,7 +47,7 @@ if(isset($_POST['connexion'])){
                 <br>
                 <button type="submit" class="btn btn-primary" name="connexion">connexion</button>
             </form>
-			<p>Vous n'avez pas encore de compte ? <a href="inscription.php">Inscrivivez-vous</a></p>
+			<p>Vous n'avez pas encore de compte ? <a href="inscription.php">Inscrivez-vous</a></p>
             <?php
             if (isset($erreur)) {
                 echo '<font color="red">' . $erreur . "</font>";

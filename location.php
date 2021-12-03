@@ -24,6 +24,14 @@ if(isset($_GET['mail'])){
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+	<style>
+        .test{
+            text-transform: uppercase;
+        }
+        .color-red{
+            color: red;
+        }
+    </style>
 
     <title>The best CMS 4 ever</title>
   </head>
@@ -83,7 +91,7 @@ $affichage = $pdo->query("SELECT * FROM hetic_inscription"); ?>
       <td><?php echo $articles["prenom"] ?></td>
       <td><?php echo $articles["mail"] ?></td>
 	  <td><?php echo $articles["admin"] ?></td>
-	  <td>Supprimer le compte</td>
+	  <td><a href="delete.php?tokenDELETE=<?php echo $articles['token']?>&token=<?php echo $token_greg;?>&mail=<?php echo $mail;?>">Supprimer le compte</a></td>
 	<?php
 		if($mail_greg == 'Y'){
 		echo '<td><a href="#!"><img src="" alt="Bouton de modification"></a></td>';
