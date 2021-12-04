@@ -1,6 +1,15 @@
 <?php session_start(); 
 $pdo = new PDO('mysql:host=localhost;dbname=cms', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
+if(isset($_GET['token'])){
+	$token10 = $_GET['token'];
+	$recupDonneeToken = $pdo->query('SELECT * FROM hetic_inscription WHERE token="'.$token10.'"');
+	$recupDonneeToken2 = $recupDonneeToken->fetch(PDO::FETCH_ASSOC);
+	$verifAdmin = $recupDonneeToken2['admin'];
+
+}
+
+
 if(isset($_GET['mail'])){
 	$mail = $_GET['mail'];
 
@@ -8,6 +17,8 @@ if(isset($_GET['mail'])){
 	$donnee_mail = $recup_donnee_mail->fetch(PDO::FETCH_ASSOC);
 	$mail_greg = $donnee_mail["admin"];
 	$token_greg = $donnee_mail["token"];
+	$verifAdmin = $donnee_mail['admin'];
+
 }else{
 	$token_greg = $_GET['token'];
 
@@ -23,7 +34,7 @@ if(isset($_GET['mail'])){
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous"> -->
 	<style>
         .test{
             text-transform: uppercase;
@@ -60,12 +71,22 @@ if(isset($_GET['mail'])){
 </nav>
 <?php
 
+$test_greg_2 = isset($_GET['token']);
 
-if(isset($_GET['mail'])){
-	$affichage = $pdo->query('SELECT * FROM hetic_inscription WHERE mail="'.$mail.'"'); 
-}if(isset($_GET['token'])){
-	$affichage = $pdo->query('SELECT * FROM hetic_inscription WHERE token="'.$token_greg.'"'); 
+
+if($verifAdmin == 'Y' ){
+	$affichage = $pdo->query('SELECT * FROM hetic_inscription');
 }
+else{
+	if(isset($_GET['mail'])){
+		$affichage = $pdo->query('SELECT * FROM hetic_inscription WHERE mail="'.$mail.'"'); 
+	}if(isset($_GET['token'])){
+		$affichage = $pdo->query('SELECT * FROM hetic_inscription WHERE token="'.$token_greg.'"'); 
+	}
+}
+
+
+
 
 ?>
 <table class="table">
@@ -77,12 +98,7 @@ if(isset($_GET['mail'])){
       <th scope="col">Mail</th>
 	  <th scope="col">Administrateur</th>
 	  <th scope="col">Action</th>
-	  <?php
-		if($mail_greg == 'Y'){
-			echo '<th scope="col">Modification</th>';
-		}
-	  ?>
-	  <th>Publications</th>
+	  <th scope="col">Modification du compte</th>
     </tr>
   </thead>
 
@@ -96,15 +112,7 @@ if(isset($_GET['mail'])){
       <td><?php echo $articles["mail"] ?></td>
 	  <td><?php echo $articles["admin"] ?></td>
 	  <td><a href="delete.php?tokenDELETE=<?php echo $articles['token']?>&token=<?php echo $token_greg;?>&mail=<?php echo $mail;?>">Supprimer le compte</a></td>
-	<?php
-		if($mail_greg == 'Y'){
-		echo '<td><a href="#!"><img src="" alt="Bouton de modification"></a></td>';
-		}
-														
-		if($mail_greg == 'Y'){
-			echo '<td><button>Voir mes publications</button><td>';
-		}
-	?>
+	  <td><a href="update.php?id=<?php echo $articles['id'];?>&token=<?php echo $token_greg;?>&mail=<?php echo $mail;?>&admin=<?php echo $mail_greg;?>">Modifier le compte</a></td>
     </tr>
   </tbody>
 
@@ -126,8 +134,14 @@ if(isset($_GET['mail'])){
 	$recup_nom_via_token = $pdo->query('SELECT * FROM hetic_inscription WHERE token="'.$token_greg.'"');
 	$recup_nom_via_token2 = $recup_nom_via_token->fetch(PDO::FETCH_ASSOC);
 	$nom = $recup_nom_via_token2['prenom'];
+	$admin_publi = $recup_nom_via_token2['admin'];
 
-	$affi_card = $pdo->query('SELECT * FROM hetic_publication WHERE auteur="'.$nom.'"');
+	if($admin_publi == 'Y'){
+		$affi_card = $pdo->query('SELECT * FROM hetic_publication');
+	}else{
+		$affi_card = $pdo->query('SELECT * FROM hetic_publication WHERE auteur="'.$nom.'"');
+	}
+
 	while($affi_card2 = $affi_card->fetch(PDO::FETCH_ASSOC)){?>
 
 		<div class="card" style="width: 18rem;">
@@ -135,9 +149,12 @@ if(isset($_GET['mail'])){
 			<div class="card-body">
 				<h5 class="card-title"><?php echo $affi_card2['titre']; ?></h5>
 				<p class="card-text"><?php echo $affi_card2['contenu']; ?></p>
+				<p class="card-text"><?php echo $affi_card2['auteur']; ?></p>
+				<p class="card-text"><?php echo $affi_card2['date']; ?></p>
 				<!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
 			</div>
 			<a href="delete_publi.php?id=<?php echo $affi_card2['id'];?>&token=<?php echo $token_greg;?>&mail=<?php echo $mail;?>">Supprimer la publication</a>
+			<a href="update_publi.php?id=<?php echo $affi_card2['id'];?>&token=<?php echo $token_greg;?>&mail=<?php echo $mail;?>">Modifier la publication</a>
 		</div>
 
 <?php
@@ -150,15 +167,22 @@ if(isset($_GET['mail'])){
 <?php
 
 	$affi_com = $pdo->query('SELECT * FROM commentaires WHERE auteur_com="'.$token_greg.'"');
-	while($affi_com2 = $affi_com->fetch(PDO::FETCH_ASSOC)){?>
+	while($affi_com2 = $affi_com->fetch(PDO::FETCH_ASSOC)){
+		$nom_com_token = $affi_com2['auteur_com'];
+		$affichage_nom_com = $pdo->query('SELECT * FROM hetic_inscription WHERE token="'.$nom_com_token.'"');
+		$essain°1 = $affichage_nom_com->fetch(PDO::FETCH_ASSOC);
+		$essain°2 = $essain°1['prenom'];?>
 
 	<div class="card" style="width: 18rem;">
 		<h4><?php echo $affi_com2['titre_com']; ?></h4>
 		<br>
 		<p><?php echo $affi_com2['contenu_com']; ?></p>
 		<br>
+		<p><?php echo $essain°2; ?></p>
+		<br>
 		<p><?php echo $affi_com2['date_com']; ?></p>
-		<a href="delete_com.php?id=<?php echo $affi_com2['id'];?>&token=<?php echo $token_greg;?>&mail=<?php echo $mail;?>">Supprimer la publication</a>
+		<a href="delete_com.php?id=<?php echo $affi_com2['id'];?>&token=<?php echo $token_greg;?>&mail=<?php echo $mail;?>">Supprimer le commentaire</a>
+		<a href="update_com.php?id=<?php echo $affi_com2['id'];?>&token=<?php echo $token_greg;?>&mail=<?php echo $mail;?>">Modifier le commentaire</a>
 	</div>
 
 <?php
@@ -222,7 +246,7 @@ if(isset($_GET['mail'])){
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script> -->
 </body>
 </html>
