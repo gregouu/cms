@@ -131,12 +131,13 @@ if(isset($_GET['mail'])){
 	while($affi_card2 = $affi_card->fetch(PDO::FETCH_ASSOC)){?>
 
 		<div class="card" style="width: 18rem;">
-		<img src="images/<?php echo $affi_card2['nom']; ?>" class="card-img-top">
-		<div class="card-body">
-			<h5 class="card-title"><?php echo $affi_card2['titre']; ?></h5>
-			<p class="card-text"><?php echo $affi_card2['contenu']; ?></p>
-			<!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
-		</div>
+			<img src="images/<?php echo $affi_card2['nom']; ?>" class="card-img-top">
+			<div class="card-body">
+				<h5 class="card-title"><?php echo $affi_card2['titre']; ?></h5>
+				<p class="card-text"><?php echo $affi_card2['contenu']; ?></p>
+				<!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+			</div>
+			<a href="delete_publi.php?id=<?php echo $affi_card2['id'];?>&token=<?php echo $token_greg;?>&mail=<?php echo $mail;?>">Supprimer la publication</a>
 		</div>
 
 <?php
@@ -157,6 +158,7 @@ if(isset($_GET['mail'])){
 		<p><?php echo $affi_com2['contenu_com']; ?></p>
 		<br>
 		<p><?php echo $affi_com2['date_com']; ?></p>
+		<a href="delete_com.php?id=<?php echo $affi_com2['id'];?>&token=<?php echo $token_greg;?>&mail=<?php echo $mail;?>">Supprimer la publication</a>
 	</div>
 
 <?php
